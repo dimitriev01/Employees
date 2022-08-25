@@ -1,8 +1,15 @@
+import React from "react";
+import { BrowserRouter } from 'react-router-dom'
+import { Router } from "./components/Router/Router";
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
-      Работает!
+      <BrowserRouter>
+        <div className="container">
+          <Router />
+        </div>
+      </BrowserRouter>
     </div>
   );
 }

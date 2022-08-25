@@ -1,0 +1,29 @@
+*,
+::after,
+::before {
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+}
+
+.App {
+  overflow: hidden;
+  background: #bff9f9;
+  min-height: 100vh;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.container {
+  padding: 80px 30px;
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+}

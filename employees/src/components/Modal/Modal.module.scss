@@ -1,0 +1,31 @@
+.modal {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    display: none;
+    background: rgba(0, 0, 0, .4);
+    z-index: 1;
+    &__content {
+        box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+        position: relative;
+        border-radius: 15px;
+        padding: 25px;
+        background: white;
+        min-width: 550px
+    }
+    &__close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+      }
+}
+
+.modal_active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
