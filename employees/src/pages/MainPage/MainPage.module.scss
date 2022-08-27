@@ -1,9 +1,7 @@
-.table {
-    border: 1px solid;
-    width: 100%;
-    text-align: center;
+tr {
+    border: solid 1px #9e9e9e;
+}
 
-    &__title {
-        font-weight: 700;
-    }
+.add__btn {
+    margin-top: 10px;
 }

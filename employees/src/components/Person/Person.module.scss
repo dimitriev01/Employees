@@ -1,0 +1,10 @@
+.person{
+    &__tools{
+        cursor: pointer;
+        float: right;
+        font-size: 25px;
+        svg{
+            margin: 0 5px;
+        }
+    }
+}
