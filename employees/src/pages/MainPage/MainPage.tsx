@@ -25,7 +25,7 @@ const MainPage: React.FC = () => {
         if (shoudRemove) {
             axios.delete(api + '/' + id)
                 .then(() => getPersons())
-                .then(() => notyf.success(`Сотрудник удалён`))
+                .then(() => notyf.success(`Сотрудник c id ${id} удалён`))
                 .catch(err => {
                     notyf.error(`Не получилось удалить сотрудника ${err}`)
                 });
@@ -41,6 +41,23 @@ const MainPage: React.FC = () => {
             .catch(err => {
                 notyf.error(`Не получилось обновить данные с сервера ${err}`)
             });
+    }
+
+    const fetchPersons = () => {
+        notyf.open({
+            message: 'Загружаются данные...',
+            background: 'orange'
+        })
+        setIsLoading(true)
+        axios.get(api)
+            .then(res => setPersons(res.data))
+            .then(() => notyf.success('Данные с сервера загружены'))
+            .then(() => setIsLoading(false))
+            .catch(err => {
+                notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
+                setIsError(true)
+                setIsLoading(false);
+            })
     }
 
     const addPerson = (firstName: string, lastName: string) => {
@@ -67,16 +84,7 @@ const MainPage: React.FC = () => {
     }
 
     useEffect(() => {
-        setIsLoading(true)
-        axios.get(api)
-            .then(res => setPersons(res.data))
-            .then(() => notyf.success('Данные с сервера загружены'))
-            .then(() => setIsLoading(false))
-            .catch(err => {
-                notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
-                setIsError(true)
-                setIsLoading(false);
-            })
+        fetchPersons()
     }, [])
 
     // useEffect(() => {

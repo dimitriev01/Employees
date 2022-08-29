@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IPerson } from '../../interfaces';
 import Btn from '../Btn/Btn';
 import Input from '../Input/Input';
@@ -16,23 +16,25 @@ interface PersonEditFormProps {
 
 const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, setIsModalEditPerson, choosedPerson }) => {
     const notyf = new Notyf();
-    const [personEdit, setPersonEdit] = useState<IPerson>(choosedPerson)
+    const [personEdit, setPersonEdit] = useState<IPerson>(null!)
 
     const submitFormHandler = (e: React.FormEvent) => {
         e.preventDefault()
-        if (!personEdit?.firstName || !personEdit?.lastName) {
+
+        if (!personEdit.firstName || !personEdit.lastName) {
             notyf.error(`У сотрудника должны быть фамилия и имя`)
             return
         }
-        const firstPerson = persons.find(p => personEdit.firstName === p.firstName && personEdit.lastName === p.lastName)
         if (personEdit.firstName === choosedPerson.firstName && personEdit.lastName === choosedPerson.lastName) {
             notyf.error('Вы ввели те же данные сотрудника')
             return;
-        } else
-            if (firstPerson) {
-                notyf.error(`Такой сотрудник уже есть, он с id ${firstPerson.id}`)
+        } else {
+            const firstPersonTheSamePerson = persons.find(p => personEdit.firstName === p.firstName && personEdit.lastName === p.lastName) || null
+            if (firstPersonTheSamePerson) {
+                notyf.error(`Такой сотрудник уже есть, он с id ${firstPersonTheSamePerson.id}`)
                 return;
             }
+        }
 
         axios.put('http://localhost:3001/persons/' + choosedPerson.id, {
             firstName: personEdit.firstName,
@@ -41,7 +43,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
             .then(() => {
                 getPersons()
                 setIsModalEditPerson(false)
-                notyf.success(`Данные сотрудника ${choosedPerson.id} изменены`)
+                notyf.success(`Данные сотрудника с id ${choosedPerson.id} изменены`)
             })
             .catch(err => {
                 notyf.error(`Не получилось изменить данные сотрудника ${err}`)
@@ -49,10 +51,15 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
         setPersonEdit({ ...personEdit, firstName: '', lastName: '' })
     }
 
+    useEffect(() => {
+        setPersonEdit(choosedPerson)
+    }, [choosedPerson])
+
     return (
         <form className={cl.form} onSubmit={submitFormHandler}>
             <div className={cl.form__item}>
                 <Input
+                    name='firstName'
                     value={personEdit?.firstName}
                     onChange={e => setPersonEdit({ ...personEdit, firstName: e.currentTarget.value })}
                     className={cl.form__item__input}
@@ -63,6 +70,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
 
             <div className={cl.form__item}>
                 <Input
+                    name='lastName'
                     value={personEdit?.lastName}
                     onChange={e => setPersonEdit({ ...personEdit, lastName: e.currentTarget.value })}
                     className={cl.form__item__input}
