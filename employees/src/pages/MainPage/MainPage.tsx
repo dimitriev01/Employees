@@ -7,8 +7,11 @@ import Btn from '../../components/Btn/Btn';
 import PersonForm from '../../components/PersonForm/PersonForm';
 import Persons from '../../components/Persons/Persons';
 import PersonEditForm from '../../components/PersonEditForm/PersonEditForm';
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
 
 const MainPage: React.FC = () => {
+    const notyf = new Notyf();
     const api = 'http://localhost:3001/persons';
     const [persons, setPersons] = useState<IPerson[]>([])
     const [isModalAddPerson, setIsModalAddPerson] = useState<boolean>(false)
@@ -21,20 +24,23 @@ const MainPage: React.FC = () => {
         const shoudRemove = window.confirm('Вы уверены, что хотите удалить сотрудника?')
         if (shoudRemove) {
             axios.delete(api + '/' + id)
-                .then(res => {
-                    console.log(res.data);
-                })
+                .then(() => getPersons())
+                .then(() => notyf.success(`Сотрудник удалён`))
                 .catch(err => {
-                    console.log(err);
+                    notyf.error(`Не получилось удалить сотрудника ${err}`)
                 });
         }
     }
 
-    function changePerson(person: IPerson) {
-        const index = persons.findIndex(p => {
-            return p.id === person.id
-        })
-        setPersons(Object.assign([...persons], { [index]: person }))
+    const getPersons = async () => {
+        await axios.get<IPerson[]>(api)
+            .then(p => {
+                const allPersons: IPerson[] = p.data;
+                setPersons(allPersons)
+            })
+            .catch(err => {
+                notyf.error(`Не получилось обновить данные с сервера ${err}`)
+            });
     }
 
     const addPerson = (firstName: string, lastName: string) => {
@@ -45,54 +51,69 @@ const MainPage: React.FC = () => {
         }
         const isHasTheSamePerson = persons.find(person => person.firstName === newPerson.firstName && person.lastName === newPerson.lastName);
         if (isHasTheSamePerson) {
-            alert('Такой сотрудник уже добавлен')
+            notyf.error(`Такой сотрудник уже добавлен, он с id ${isHasTheSamePerson.id}`)
             return;
         }
-        axios.post(api, newPerson)
+        axios.post(api + '/', newPerson)
             .then(res => {
                 console.log(res.data);
+                notyf.success(`Сотрудник добавлен`)
+                getPersons();
+                setIsModalAddPerson(false)
             })
-            .catch(error => {
-                console.log(error);
+            .catch(err => {
+                notyf.error(`Не получилось добавить сотрудника ${err}`)
             });
-        setPersons(prev => [...prev, newPerson])
-        setIsModalAddPerson(false)
     }
 
     useEffect(() => {
-        setTimeout(() => {
-            try {
-                setIsLoading(true)
-                axios.get(api)
-                    .then(res => setPersons(res.data))
-                setIsLoading(false)
-            }
-            catch (err) {
-                setIsLoading(false);
+        setIsLoading(true)
+        axios.get(api)
+            .then(res => setPersons(res.data))
+            .then(() => notyf.success('Данные с сервера загружены'))
+            .then(() => setIsLoading(false))
+            .catch(err => {
+                notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
                 setIsError(true)
-                console.log(err);
-            }
-        }, 1000)
-    }, [persons])
+                setIsLoading(false);
+            })
+    }, [])
 
-    if (isError) {
-        return (
-            <div>Невозможно получить сотрудников. Сервер не отвечает.</div>
-        )
-    }
+    // useEffect(() => {
+    //     console.log('persons изменилось')
+    //     getPersons()
+    // }, [persons])
 
     return (
         <>
-            {isLoading ?
-                <div>Идет загрузка...</div>
-                :
-                <Persons
-                    setIsModalEditPerson={setIsModalEditPerson}
-                    setChoosedPersonEdit={setChoosedPersonEdit}
-                    persons={persons}
-                    onRemove={removeHandler}
-                />
+            {
+                isError ?
+                    <p>Невозможно получить сотрудников! Сервер не отвечает!</p> :
+                    isLoading ?
+                        <p>Идет загрузка сотрудников...</p>
+                        :
+                        <>
+                            <Persons
+                                setIsModalEditPerson={setIsModalEditPerson}
+                                setChoosedPersonEdit={setChoosedPersonEdit}
+                                persons={persons}
+                                onRemove={removeHandler}
+                            />
+                            <Modal
+                                title='Редактирование сотрудника'
+                                visible={isModalEditPerson}
+                                setVisible={setIsModalEditPerson}
+                            >
+                                <PersonEditForm
+                                    setIsModalEditPerson={setIsModalEditPerson}
+                                    choosedPerson={choosedPersonEdit}
+                                    getPersons={getPersons}
+                                    persons={persons}
+                                />
+                            </Modal>
+                        </>
             }
+
 
             <Btn className={cl.add__btn} onClick={() => setIsModalAddPerson(true)}>Создать сотрудника</Btn>
             <Modal
@@ -102,17 +123,6 @@ const MainPage: React.FC = () => {
             >
                 <PersonForm
                     onAdd={addPerson}
-                />
-            </Modal>
-
-            <Modal
-                title='Редактирование сотрудника'
-                visible={isModalEditPerson}
-                setVisible={setIsModalEditPerson}
-            >
-                <PersonEditForm
-                    onUpdate={changePerson}
-                    choosedPerson={choosedPersonEdit}
                 />
             </Modal>
         </>

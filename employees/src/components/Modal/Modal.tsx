@@ -16,7 +16,6 @@ const Modal: React.FC<ModalProps> = ({ children, visible, setVisible, title }) =
         rootClass.push(cl['modal_active'])
     }
 
-
     return (
         <div className={rootClass.join(' ')} >
             <div className={cl.modal__content}>
