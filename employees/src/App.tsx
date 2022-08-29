@@ -1,15 +1,12 @@
 import React from "react";
-import { BrowserRouter } from 'react-router-dom'
-import { Router } from "./components/Router/Router";
+import MainPage from "./pages/MainPage/MainPage";
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <BrowserRouter>
-        <div className="container">
-          <Router />
-        </div>
-      </BrowserRouter>
+      <div className="container">
+        <MainPage />
+      </div>
     </div>
   );
 }

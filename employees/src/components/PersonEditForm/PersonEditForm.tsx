@@ -79,7 +79,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
                 />
             </div>
 
-            <Btn className={cl.form__btn}>
+            <Btn type='submit' className={cl.form__btn}>
                 Сохранить
             </Btn>
         </form>

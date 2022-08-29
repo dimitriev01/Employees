@@ -111,6 +111,7 @@ const MainPage: React.FC = () => {
                                 title='Редактирование сотрудника'
                                 visible={isModalEditPerson}
                                 setVisible={setIsModalEditPerson}
+                                setChoosedPersonEdit={setChoosedPersonEdit}
                             >
                                 <PersonEditForm
                                     setIsModalEditPerson={setIsModalEditPerson}
@@ -121,7 +122,6 @@ const MainPage: React.FC = () => {
                             </Modal>
                         </>
             }
-
 
             <Btn className={cl.add__btn} onClick={() => setIsModalAddPerson(true)}>Создать сотрудника</Btn>
             <Modal

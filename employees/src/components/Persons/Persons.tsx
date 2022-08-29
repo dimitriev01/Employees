@@ -18,10 +18,11 @@ const Persons: React.FC<PersonsProps> = ({ persons, onRemove, setIsModalEditPers
 
     return (
         <>
-            <h2>Список сотрудников</h2>
+            <h2 className={cl.list}>Список сотрудников</h2>
             <table className={cl.table}>
                 <thead>
                     <tr className={cl.table__title}>
+                        <th></th>
                         <th className={cl.table__title__firstname}>Имя</th>
                         <th className={cl.table__title__lastname}>Фамилия</th>
                         <th></th>

@@ -1,11 +1,24 @@
-.person{
-    &__tools{
+.person {
+    &__tools {
         cursor: pointer;
         float: right;
         font-size: 25px;
-        svg{
+
+        svg {
             user-select: none;
             margin: 0 5px;
+        }
+        svg:hover {
+            color: red;
+        }
+    }
+}
+
+@media (max-width: 375px) {
+    .person {
+        font-size: 15px;
+        &__tools {
+            font-size: 20px;
         }
     }
 }

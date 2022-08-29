@@ -7,22 +7,24 @@
     display: none;
     background: rgba(0, 0, 0, .4);
     z-index: 1;
+
     &__content {
         box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
         position: relative;
         border-radius: 15px;
         background: white;
-        min-width: 350px;
         width: 100%;
-        max-width: 600px;
-        .title{
-            border-top-left-radius: 10px; 
-            border-top-right-radius: 10px; 
+        max-width: 400px;
+
+        .title {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
             padding: 10px;
-            color:#fff;
+            color: #fff;
             background: grey;
         }
-        .back{
+
+        .back {
             text-decoration: underline;
             margin-top: 10px;
             margin-left: 20px;
@@ -36,3 +38,10 @@
     align-items: center;
 }
 
+@media (max-width: 768px) {
+    .modal {
+        &__content {
+            margin: 0 20px;
+        }
+    }
+}

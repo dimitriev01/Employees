@@ -1,6 +1,6 @@
 import React from 'react';
 import cl from './Person.module.scss'
-import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import { faEdit, faTrashAlt, faUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IPerson } from '../../interfaces';
 
@@ -20,6 +20,7 @@ const Person: React.FC<PersonProps> = ({ person, onRemove, setIsModalEditPerson,
 
     return (
         <tr key={person.id} className={cl.person}>
+            <td><FontAwesomeIcon icon={faUser}/></td>
             <td>{person.firstName}</td>
             <td>{person.lastName}</td>
             <td className={cl.person__tools}>

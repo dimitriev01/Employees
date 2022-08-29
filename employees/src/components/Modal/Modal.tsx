@@ -1,19 +1,25 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { IPerson } from '../../interfaces';
 import cl from './Modal.module.scss'
 
 interface ModalProps {
     visible: boolean,
     setVisible(visible: boolean): void
     children: React.ReactNode,
-    title: string
+    title: string,
+    setChoosedPersonEdit?: (person: IPerson) => void
 }
 
-const Modal: React.FC<ModalProps> = ({ children, visible, setVisible, title }) => {
+const Modal: React.FC<ModalProps> = ({ setChoosedPersonEdit, children, visible, setVisible, title }) => {
 
     const rootClass = [cl['modal']]
     if (visible) {
         rootClass.push(cl['modal_active'])
+    }
+
+    const goToMainPageHandler = () => {
+        setVisible(false);
+        setChoosedPersonEdit?.(null!)
     }
 
     return (
@@ -21,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({ children, visible, setVisible, title }) =
             <div className={cl.modal__content}>
                 <div className={cl.title}>{title}</div>
                 <div className={cl.back}>
-                    <NavLink onClick={() => setVisible(false)} to='/' >Назад к списку</NavLink>
+                    <a onClick={goToMainPageHandler} href='#' >Назад к списку</a>
                 </div>
                 {children}
             </div>

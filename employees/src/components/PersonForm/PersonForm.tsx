@@ -54,7 +54,7 @@ const PersonForm: React.FC<PersonFormProps> = ({ onAdd }) => {
                 {errors.lastName && <div className={cl['form__item__error']}>{errors.lastName.message}</div>}
             </div>
 
-            <Btn className={cl.form__btn}>
+            <Btn type='submit' className={cl.form__btn}>
                 Добавить
             </Btn>
         </form>
