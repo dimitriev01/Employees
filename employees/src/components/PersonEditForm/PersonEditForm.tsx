@@ -22,7 +22,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
         e.preventDefault()
 
         if (!personEdit.firstName || !personEdit.lastName) {
-            notyf.error(`У сотрудника должны быть фамилия и имя`)
+            notyf.error('У сотрудника должны быть фамилия и имя')
             return
         }
         if (personEdit.firstName === choosedPerson.firstName && personEdit.lastName === choosedPerson.lastName) {
@@ -40,11 +40,9 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
             firstName: personEdit.firstName,
             lastName: personEdit.lastName
         })
-            .then(() => {
-                getPersons()
-                setIsModalEditPerson(false)
-                notyf.success(`Данные сотрудника с id ${choosedPerson.id} изменены`)
-            })
+            .then(() => getPersons())
+            .then(() => setIsModalEditPerson(false))
+            .then(() => notyf.success(`Данные сотрудника с id ${choosedPerson.id} изменены`))
             .catch(err => {
                 notyf.error(`Не получилось изменить данные сотрудника ${err}`)
             })
@@ -59,7 +57,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
         <form className={cl.form} onSubmit={submitFormHandler}>
             <div className={cl.form__item}>
                 <Input
-                    name='firstName'
+                    name="firstName"
                     value={personEdit?.firstName}
                     onChange={e => setPersonEdit({ ...personEdit, firstName: e.currentTarget.value })}
                     className={cl.form__item__input}
@@ -70,7 +68,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
 
             <div className={cl.form__item}>
                 <Input
-                    name='lastName'
+                    name="lastName"
                     value={personEdit?.lastName}
                     onChange={e => setPersonEdit({ ...personEdit, lastName: e.currentTarget.value })}
                     className={cl.form__item__input}
@@ -79,7 +77,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
                 />
             </div>
 
-            <Btn type='submit' className={cl.form__btn}>
+            <Btn type="submit" className={cl.form__btn}>
                 Сохранить
             </Btn>
         </form>

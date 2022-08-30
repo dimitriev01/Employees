@@ -13,7 +13,7 @@ type PersonsProps = {
 const Persons: React.FC<PersonsProps> = ({ persons, onRemove, setIsModalEditPerson, setChoosedPersonEdit }) => {
 
     if (!persons.length) {
-        return (<p className={cl['persons-empty']}>Сотрудников нет!</p>)
+        return <p className={cl['persons-empty']}>Сотрудников нет!</p>
     }
 
     return (

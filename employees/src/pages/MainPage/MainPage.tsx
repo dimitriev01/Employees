@@ -43,30 +43,13 @@ const MainPage: React.FC = () => {
             });
     }
 
-    const fetchPersons = () => {
-        notyf.open({
-            message: 'Загружаются данные...',
-            background: 'orange'
-        })
-        setIsLoading(true)
-        axios.get(api)
-            .then(res => setPersons(res.data))
-            .then(() => notyf.success('Данные с сервера загружены'))
-            .then(() => setIsLoading(false))
-            .catch(err => {
-                notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
-                setIsError(true)
-                setIsLoading(false);
-            })
-    }
-
     const addPerson = (firstName: string, lastName: string) => {
         const newPerson: IPerson = {
             id: Date.now(),
             firstName,
             lastName
         }
-        const isHasTheSamePerson = persons.find(person => person.firstName === newPerson.firstName && person.lastName === newPerson.lastName);
+        const isHasTheSamePerson: IPerson = persons.find(person => person.firstName === newPerson.firstName && person.lastName === newPerson.lastName) || null!;
         if (isHasTheSamePerson) {
             notyf.error(`Такой сотрудник уже добавлен, он с id ${isHasTheSamePerson.id}`)
             return;
@@ -83,6 +66,23 @@ const MainPage: React.FC = () => {
             });
     }
 
+    const fetchPersons = () => {
+        notyf.open({
+            message: 'Загружаются данные...',
+            background: 'orange'
+        })
+        setIsLoading(true)
+        axios.get(api)
+            .then(res => setPersons(res.data))
+            .then(() => notyf.success('Данные с сервера загружены'))
+            .then(() => setIsLoading(false))
+            .catch(err => {
+                notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
+                setIsError(true)
+                setIsLoading(false);
+            })
+    }
+    
     useEffect(() => {
         fetchPersons()
     }, [])
@@ -96,8 +96,8 @@ const MainPage: React.FC = () => {
         <>
             {
                 isError ?
-                    <p>Невозможно получить сотрудников! Сервер не отвечает!</p> :
-                    isLoading ?
+                    <p>Невозможно получить сотрудников! Сервер не отвечает!</p>
+                    : isLoading ?
                         <p>Идет загрузка сотрудников...</p>
                         :
                         <>
@@ -108,7 +108,7 @@ const MainPage: React.FC = () => {
                                 onRemove={removeHandler}
                             />
                             <Modal
-                                title='Редактирование сотрудника'
+                                title="Редактирование сотрудника"
                                 visible={isModalEditPerson}
                                 setVisible={setIsModalEditPerson}
                                 setChoosedPersonEdit={setChoosedPersonEdit}
@@ -125,7 +125,7 @@ const MainPage: React.FC = () => {
 
             <Btn className={cl.add__btn} onClick={() => setIsModalAddPerson(true)}>Создать сотрудника</Btn>
             <Modal
-                title='Создание сотрудника'
+                title="Создание сотрудника"
                 visible={isModalAddPerson}
                 setVisible={setIsModalAddPerson}
             >

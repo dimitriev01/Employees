@@ -13,13 +13,14 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ setChoosedPersonEdit, children, visible, setVisible, title }) => {
 
     const rootClass = [cl['modal']]
-    if (visible) {
-        rootClass.push(cl['modal_active'])
-    }
 
     const goToMainPageHandler = () => {
         setVisible(false);
         setChoosedPersonEdit?.(null!)
+    }
+
+    if (visible) {
+        rootClass.push(cl['modal_active'])
     }
 
     return (
