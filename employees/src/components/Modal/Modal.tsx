@@ -27,8 +27,8 @@ const Modal: React.FC<ModalProps> = ({ setChoosedPersonEdit, children, visible, 
         <div className={rootClass.join(' ')} >
             <div className={cl.modal__content}>
                 <div className={cl.title}>{title}</div>
-                <div className={cl.back}>
-                    <a onClick={goToMainPageHandler} href='#' >Назад к списку</a>
+                <div className={cl.back} onClick={goToMainPageHandler}>
+                   Назад к списку
                 </div>
                 {children}
             </div>

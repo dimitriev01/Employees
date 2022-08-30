@@ -25,15 +25,11 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
             notyf.error('У сотрудника должны быть фамилия и имя')
             return
         }
-        if (personEdit.firstName === choosedPerson.firstName && personEdit.lastName === choosedPerson.lastName) {
-            notyf.error('Вы ввели те же данные сотрудника')
+
+        const firstPersonTheSamePerson = persons.find(p => personEdit.firstName === p.firstName && personEdit.lastName === p.lastName) || null
+        if (firstPersonTheSamePerson) {
+            notyf.error(`Такой сотрудник уже есть, он с id ${firstPersonTheSamePerson.id}`)
             return;
-        } else {
-            const firstPersonTheSamePerson = persons.find(p => personEdit.firstName === p.firstName && personEdit.lastName === p.lastName) || null
-            if (firstPersonTheSamePerson) {
-                notyf.error(`Такой сотрудник уже есть, он с id ${firstPersonTheSamePerson.id}`)
-                return;
-            }
         }
 
         axios.put('http://localhost:3001/persons/' + choosedPerson.id, {
@@ -46,7 +42,6 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
             .catch(err => {
                 notyf.error(`Не получилось изменить данные сотрудника ${err}`)
             })
-        setPersonEdit({ ...personEdit, firstName: '', lastName: '' })
     }
 
     useEffect(() => {
@@ -58,7 +53,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
             <div className={cl.form__item}>
                 <Input
                     name="firstName"
-                    value={personEdit?.firstName}
+                    value={personEdit?.firstName || ''}
                     onChange={e => setPersonEdit({ ...personEdit, firstName: e.currentTarget.value })}
                     className={cl.form__item__input}
                     autoComplete="off"
@@ -69,7 +64,7 @@ const PersonEditForm: React.FC<PersonEditFormProps> = ({ persons, getPersons, se
             <div className={cl.form__item}>
                 <Input
                     name="lastName"
-                    value={personEdit?.lastName}
+                    value={personEdit?.lastName || ''}
                     onChange={e => setPersonEdit({ ...personEdit, lastName: e.currentTarget.value })}
                     className={cl.form__item__input}
                     autoComplete="off"

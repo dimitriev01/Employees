@@ -66,29 +66,27 @@ const MainPage: React.FC = () => {
             });
     }
 
-    const fetchPersons = () => {
-        notyf.open({
-            message: 'Загружаются данные...',
-            background: 'orange'
-        })
-        setIsLoading(true)
-        axios.get(api)
-            .then(res => setPersons(res.data))
-            .then(() => notyf.success('Данные с сервера загружены'))
-            .then(() => setIsLoading(false))
-            .catch(err => {
-                notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
-                setIsError(true)
-                setIsLoading(false);
-            })
-    }
-    
     useEffect(() => {
+        const fetchPersons = () => {
+            notyf.open({
+                message: 'Загружаются данные...',
+                background: 'orange'
+            })
+            setIsLoading(true)
+            axios.get(api)
+                .then(res => setPersons(res.data))
+                .then(() => notyf.success('Данные с сервера загружены'))
+                .then(() => setIsLoading(false))
+                .catch(err => {
+                    notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
+                    setIsError(true)
+                    setIsLoading(false);
+                })
+        }
         fetchPersons()
-    }, [])
+    }, [api])
 
     // useEffect(() => {
-    //     console.log('persons изменилось')
     //     getPersons()
     // }, [persons])
 
