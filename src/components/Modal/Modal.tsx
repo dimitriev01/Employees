@@ -1,12 +1,12 @@
 import React from 'react';
-import { IPerson } from '../../interfaces';
-import cl from './Modal.module.scss'
+import { IPerson } from '../../interfaces/IPerson';
+import cl from './Modal.module.scss';
 
 interface ModalProps {
-    visible: boolean,
+    visible: boolean
     setVisible(visible: boolean): void
-    children: React.ReactNode,
-    title: string,
+    children: React.ReactNode
+    title: string
     setChoosedPersonEdit?: (person: IPerson) => void
 }
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import cl from './Person.module.scss'
+import cl from './Person.module.scss';
 import { faEdit, faTrashAlt, faUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IPerson } from '../../interfaces';
+import { IPerson } from '../../interfaces/IPerson';
 
 interface PersonProps {
     person: IPerson

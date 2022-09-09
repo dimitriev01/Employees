@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { IPerson } from '../../interfaces';
+import { IPerson } from '../../interfaces/IPerson';
 import Btn from '../Btn/Btn';
 import Input from '../Input/Input';
 import cl from './PersonEditForm.module.scss'

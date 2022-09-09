@@ -1,5 +1,5 @@
-import React from "react";
-import MainPage from "./pages/MainPage/MainPage";
+import React from 'react';
+import MainPage from './pages/MainPage/MainPage';
 
 const App: React.FC = () => {
   return (
@@ -9,6 +9,6 @@ const App: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default App;

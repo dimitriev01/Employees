@@ -1,7 +1,7 @@
 import React from 'react';
-import { IPerson } from '../../interfaces';
+import { IPerson } from '../../interfaces/IPerson';
 import Person from '../Person/Person';
-import cl from './Persons.module.scss'
+import cl from './Persons.module.scss';
 
 type PersonsProps = {
     persons: IPerson[]
@@ -11,7 +11,6 @@ type PersonsProps = {
 }
 
 const Persons: React.FC<PersonsProps> = ({ persons, onRemove, setIsModalEditPerson, setChoosedPersonEdit }) => {
-
     if (!persons.length) {
         return <p className={cl['persons-empty']}>Сотрудников нет!</p>
     }

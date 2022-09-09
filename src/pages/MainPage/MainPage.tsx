@@ -1,24 +1,24 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { IPerson } from '../../interfaces';
-import cl from './MainPage.module.scss'
+import { IPerson } from '../../interfaces/IPerson';
+import cl from './MainPage.module.scss';
 import Modal from '../../components/Modal/Modal';
 import Btn from '../../components/Btn/Btn';
 import PersonForm from '../../components/PersonForm/PersonForm';
 import Persons from '../../components/Persons/Persons';
 import PersonEditForm from '../../components/PersonEditForm/PersonEditForm';
+import { api } from '../../api/index';
+import axios from 'axios';
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 
 const MainPage: React.FC = () => {
     const notyf = new Notyf();
-    const api = 'http://localhost:3001/persons';
-    const [persons, setPersons] = useState<IPerson[]>([])
-    const [isModalAddPerson, setIsModalAddPerson] = useState<boolean>(false)
-    const [isModalEditPerson, setIsModalEditPerson] = useState<boolean>(false)
+    const [persons, setPersons] = useState<IPerson[]>([]);
+    const [isModalAddPerson, setIsModalAddPerson] = useState<boolean>(false);
+    const [isModalEditPerson, setIsModalEditPerson] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
-    const [choosedPersonEdit, setChoosedPersonEdit] = useState<IPerson>(null!)
+    const [choosedPersonEdit, setChoosedPersonEdit] = useState<IPerson>(null!);
 
     const removeHandler = (id: number) => {
         const shoudRemove = window.confirm('Вы уверены, что хотите удалить сотрудника?')
@@ -66,29 +66,27 @@ const MainPage: React.FC = () => {
             });
     }
 
-    useEffect(() => {
-        const fetchPersons = () => {
-            notyf.open({
-                message: 'Загружаются данные...',
-                background: 'orange'
+    const fetchPersons = async () => {
+        notyf.open({
+            message: 'Загружаются данные...',
+            background: 'orange'
+        })
+        setIsLoading(true)
+        await axios.get(api)
+            .then(res => setPersons(res.data))
+            .then(() => notyf.success('Данные с сервера загружены'))
+            .then(() => setIsLoading(false))
+            .catch((err) => {
+                notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
+                setIsError(true)
+                setIsLoading(false);
             })
-            setIsLoading(true)
-            axios.get(api)
-                .then(res => setPersons(res.data))
-                .then(() => notyf.success('Данные с сервера загружены'))
-                .then(() => setIsLoading(false))
-                .catch(err => {
-                    notyf.error(`Не пришли данные сотрудников с сервера ${err}`)
-                    setIsError(true)
-                    setIsLoading(false);
-                })
-        }
-        fetchPersons()
-    }, [api])
+    }
 
-    // useEffect(() => {
-    //     getPersons()
-    // }, [persons])
+    useEffect(() => {
+        fetchPersons()
+        // eslint-disable-next-line
+    }, [api])
 
     return (
         <>
@@ -121,15 +119,17 @@ const MainPage: React.FC = () => {
                         </>
             }
 
-            <Btn className={cl.add__btn} onClick={() => setIsModalAddPerson(true)}>Создать сотрудника</Btn>
+            <Btn
+                className={cl.add__btn}
+                onClick={() => setIsModalAddPerson(true)}>
+                Создать сотрудника
+            </Btn>
             <Modal
                 title="Создание сотрудника"
                 visible={isModalAddPerson}
                 setVisible={setIsModalAddPerson}
             >
-                <PersonForm
-                    onAdd={addPerson}
-                />
+                <PersonForm onAdd={addPerson} />
             </Modal>
         </>
     );
