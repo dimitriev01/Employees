@@ -1,5 +1,11 @@
 ## How to use
 
+0. You can install dependencies
+
+```bash
+  npm i 
+```
+
 1. In the project directory, you can run both the project and the database using concurrently:
 
 ```bash
