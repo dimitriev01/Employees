@@ -1,23 +1,22 @@
 import React from 'react';
 import cl from './Input.module.scss';
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>{
-    disabled?: boolean
-    className?: string
-    ref?: React.ForwardedRef<HTMLInputElement>
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  disabled?: boolean
+  className?: string
+  ref?: React.ForwardedRef<HTMLInputElement>
 }
 
-
+// eslint-disable-next-line react/display-name
 const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, disabled, ...otherProps }, ref) => {
-
-    return (
+  return (
         <input
             disabled={disabled}
-            className={[cl.input, className].join(" ")}
+            className={[cl.input, className].join(' ')}
             {...otherProps}
             ref={ref}
         />
-    );
+  );
 });
 
 export default Input;
